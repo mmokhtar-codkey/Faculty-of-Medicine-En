@@ -1,0 +1,116 @@
+.sector-header {
+  border-radius: 8px;
+  text-align: center;
+}
+
+h1 {
+  color: white;
+}
+
+.card {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.contact-item {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.contact-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.department-contact {
+  transition: var(--transition-normal);
+}
+
+.department-contact:hover {
+  background-color: var(--medicine-primary-red) !important;
+  color: white;
+}
+
+.department-contact:hover h5,
+.department-contact:hover p,
+.department-contact:hover a {
+  color: white !important;
+}
+
+.emergency-contact {
+  transition: var(--transition-normal);
+  border: 2px solid transparent;
+}
+
+.emergency-contact:hover {
+  transform: translateY(-5px);
+  border-color: var(--medicine-primary-red);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.map-placeholder {
+  transition: var(--transition-normal);
+}
+
+.map-placeholder:hover {
+  border-style: solid;
+  background-color: #f8f9fa;
+}
+
+.contact-form .form-control {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  transition: var(--transition-normal);
+}
+
+.contact-form .form-control:focus {
+  border-color: var(--medicine-primary-orange);
+  box-shadow: 0 0 0 0.2rem rgba(255, 143, 0, 0.25);
+}
+
+.working-hours .hour-item {
+  transition: var(--transition-normal);
+}
+
+.working-hours .hour-item:hover {
+  transform: translateX(-5px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .sector-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .emergency-contact {
+    margin-bottom: 1rem;
+  }
+
+  .department-contact {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .emergency-contact i {
+    font-size: 1.5rem !important;
+  }
+  
+  .emergency-contact h5 {
+    font-size: 1rem;
+  }
+}

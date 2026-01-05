@@ -1,0 +1,141 @@
+<div class="container section">
+  <!-- Program Title Section -->
+  <div class="sector-header text-white p-4 mb-4 rounded">
+    <h1 class="text-brown">{{ program?.pageTitle || 'Loading data...' }}</h1>
+  </div>
+
+  <!-- Horizontal Tabs -->
+  <div class="medicine-tabs">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [class.active]="activeTab === 'about'"
+          (click)="switchTab('about')"
+          type="button"
+        >
+          About the Program
+        </button>
+      </li>
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [class.active]="activeTab === 'details'"
+          (click)="switchTab('details')"
+          type="button"
+        >
+          Program Details
+        </button>
+      </li>
+      <li class="nav-item">
+        <button
+          class="nav-link"
+          [class.active]="activeTab === 'members'"
+          (click)="switchTab('members')"
+          type="button"
+        >
+          Faculty Members
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Content Area -->
+  <div class="row">
+    <!-- About Tab Content -->
+    <div *ngIf="activeTab === 'about'" class="col-12">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 mb-4">
+          <div class="list-group">
+            <button type="button" class="list-group-item list-group-item-action"
+              [class.active]="activeAboutSection === 'overview'" (click)="switchAboutSection('overview')">
+              Overview
+            </button>
+            <button type="button" class="list-group-item list-group-item-action"
+              [class.active]="activeAboutSection === 'vision'" (click)="switchAboutSection('vision')">
+              Vision
+            </button>
+            <button type="button" class="list-group-item list-group-item-action"
+              [class.active]="activeAboutSection === 'mission'" (click)="switchAboutSection('mission')">
+              Mission
+            </button>
+            <button type="button" class="list-group-item list-group-item-action"
+              [class.active]="activeAboutSection === 'objectives'" (click)="switchAboutSection('objectives')">
+              Objectives
+            </button>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-body">
+              <div *ngIf="activeAboutSection === 'overview'">
+                <h3 class="text-brown mb-3">Overview</h3>
+                <p>{{ program?.about }}</p>
+              </div>
+
+              <div *ngIf="activeAboutSection === 'vision'">
+                <h3 class="text-brown mb-3">Vision</h3>
+                <p>{{ program?.vision }}</p>
+              </div>
+
+              <div *ngIf="activeAboutSection === 'mission'">
+                <h3 class="text-brown mb-3">Mission</h3>
+                <p>{{ program?.mission }}</p>
+              </div>
+
+              <div *ngIf="activeAboutSection === 'objectives'">
+                <h3 class="text-brown mb-3">Objectives</h3>
+                <ul>
+                  <li *ngFor="let goal of program?.goals">{{ goal.goalName }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Tab Content -->
+    <div *ngIf="activeTab === 'details'" class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="text-brown mb-3">{{ programDetail?.title }}</h3>
+          <p class="mb-3">{{ programDetail?.content }}</p>
+          <ul class="list-unstyled">
+            <!-- <li><strong>Target Category:</strong> {{ programDetail?.programCategory }}</li> -->
+            <!-- <li><strong>Faculty:</strong> {{ programDetail?.facultyName }}</li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Members Tab Content -->
+    <div *ngIf="activeTab === 'members'" class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="text-brown mb-3">Faculty Members</h3>
+
+          <div *ngIf="programMembers && programMembers.length > 0">
+            <div class="row">
+              <div class="col-md-6 mb-3" *ngFor="let member of programMembers">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="card-title">{{ member.memberName }}</h6>
+                    <p><span *ngIf="member.isLeader">(Program Coordinator)</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!programMembers || programMembers.length === 0">
+            <p>No information available about faculty members.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

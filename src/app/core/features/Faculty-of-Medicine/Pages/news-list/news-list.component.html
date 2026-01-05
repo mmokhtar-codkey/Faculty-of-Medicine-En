@@ -1,0 +1,87 @@
+<div class="container section">
+  <!-- Page Header -->
+  <div class="text-center mb-5">
+    <h1 class="text-brown">Faculty of Medicine News</h1>
+    <p class="text-muted">Follow the latest news, events, and conferences at the Faculty of Medicine, Luxor University</p>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="medicine-tabs">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="activeFilter === 'all'" (click)="filterNews('all')" type="button">
+          All News
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="activeFilter === 'news'" (click)="filterNews('news')" type="button">
+          News
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="activeFilter === 'conferences'" (click)="filterNews('conferences')" type="button">
+          Conferences
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="activeFilter === 'events'" (click)="filterNews('events')" type="button">
+          Events
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- News Grid -->
+  <div class="row mb-5">
+    <div class="col-lg-4 col-md-6 mb-4" *ngFor="let newsItem of paginatedNews">
+      <div class="news-card" (click)="goToNewsDetails(newsItem.id)">
+        <div class="news-card-image" *ngIf="newsItem.featuredImagePath">
+          <img [src]="newsItem.featuredImagePath" [alt]="newsItem.title" class="img-fluid">
+        </div>
+        <div class="news-card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="news-card-date">{{ newsItem.createdDate | date: 'yyyy/MM/dd' }}</div>
+            <span class="badge" [ngClass]="getCategoryBadgeClass(newsItem.postCategories[0]?.categoryName || '')" *ngIf="newsItem.postCategories && newsItem.postCategories.length > 0">
+              {{ newsItem.postCategories[0]?.categoryName || 'Uncategorized' }}
+            </span>
+          </div>
+          <h5 class="news-card-title">{{ newsItem.title }}</h5>
+          <p class="news-card-excerpt">{{ newsItem.content | slice:0:120 }}...</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <button class="btn btn-medicine btn-sm">Read More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Results Message -->
+  <div *ngIf="paginatedNews.length === 0" class="text-center py-5">
+    <div class="text-muted">
+      <i class="fas fa-newspaper fa-3x mb-3"></i>
+      <h4>No News</h4>
+      <p>No news found in this category at the moment.</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Browse News" *ngIf="totalPages > 1">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button class="page-link" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </li>
+      
+      <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
+        <button class="page-link" (click)="changePage(page)">{{ page }}</button>
+      </li>
+      
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <button class="page-link" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>

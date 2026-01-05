@@ -1,0 +1,98 @@
+<footer class="site-footer footer-default">
+  <div class="footer-main-content">
+    <div class="container">
+      <div class="footer-main-content-elements">
+        <!-- Logo and Contact Info Column -->
+        <div class="footer-main-content-element">
+          <aside class="widget">
+            <div class="widget-title uni-uppercase">
+              <a href="#" (click)="onLinkClick('logo', contact)">
+                <img [src]="logoUrl" [alt]="'Faculty of Medicine Logo'" class="img-responsive" *ngIf="logoUrl">
+              </a>
+            </div>
+            <div class="widget-content">
+              <p>{{ contact?.address }}</p>
+              <div class="uni-info-contact">
+                <ul>
+                  <!-- 
+                  <li>
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    {{ contactInfo.phone }}
+                  </li>
+                  <li>
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    {{ contactInfo.email }}
+                  </li> 
+                  -->
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Quick Links Column -->
+        <div class="footer-main-content-element">
+          <aside class="widget">
+            <h3 class="widget-title uni-uppercase">Quick Links</h3>
+            <div class="widget-content">
+              <div class="uni-quick-link">
+                <ul>
+                  <li *ngFor="let link of quickLinks; trackBy: trackByFn">
+                    <a [routerLink]="link.url" (click)="onLinkClick('quicklink', link)">
+                      <span>{{ link.icon }}</span> {{ link.text }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Latest Posts Column -->
+        <div class="footer-main-content-element">
+          <aside class="widget">
+            <h3 class="widget-title uni-uppercase">Latest Posts</h3>
+            <div class="widget-content">
+              <div class="uni-footer-latest-post">
+                <ul>
+                  <li *ngFor="let post of latestPosts; trackBy: trackByFn">
+                    <h4>
+                      <a [routerLink]="post.url" (click)="onLinkClick('post', post)">
+                        {{ post.title }}
+                      </a>
+                    </h4>
+                    <span class="time">{{ post.date }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright Area -->
+  <div class="copyright-area">
+    <button class="scroll-to-top" (click)="scrollToTop()" title="Scroll to top">
+      <i class="fa fa-arrow-up"></i>
+    </button>
+    <div class="container">
+      <div class="copyright-content">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="copyright-text">
+              © 2023 Faculty of Medicine, Luxor University. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <ul class="copyright-menu">
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

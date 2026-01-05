@@ -1,0 +1,174 @@
+.news-article {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.article-title {
+  font-size: 2.25rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.article-meta {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.article-meta span {
+  margin-right: 1rem;
+}
+
+.article-image img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.content-body {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--medicine-dark-gray);
+}
+
+.article-tags .badge {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.news-sidebar {
+  position: sticky;
+  top: 2rem;
+}
+
+.sidebar-section {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+  color: var(--medicine-primary-brown);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--medicine-primary-red);
+  font-weight: 600;
+}
+
+.list-group-item {
+  border: none;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  background-color: var(--medicine-light-gray);
+  transition: var(--transition-normal);
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  background-color: var(--medicine-primary-red);
+  color: white;
+  transform: translateX(-3px);
+}
+
+.related-news-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.related-news-item:last-child {
+  border-bottom: none;
+}
+
+.related-news-item:hover {
+  background-color: var(--medicine-light-gray);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.related-title {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+  color: var(--medicine-dark-gray);
+}
+
+.related-news-item:hover .related-title {
+  color: var(--medicine-primary-red);
+}
+
+.badge-primary {
+  background-color: var(--medicine-primary-red);
+  color: white;
+}
+
+.badge-success {
+  background-color: var(--medicine-medical-green);
+  color: white;
+}
+
+.badge-warning {
+  background-color: var(--medicine-primary-orange);
+  color: white;
+}
+
+.badge-secondary {
+  background-color: var(--medicine-dark-gray);
+  color: white;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .news-article {
+    padding: 1.5rem;
+  }
+  
+  .article-title {
+    font-size: 1.75rem;
+  }
+  
+  .content-body {
+    font-size: 1rem;
+  }
+  
+  .article-meta {
+    font-size: 0.875rem;
+  }
+  
+  .article-meta span {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .sidebar-section {
+    padding: 1rem;
+  }
+  
+  .news-sidebar {
+    position: static;
+    margin-top: 2rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .news-sidebar {
+    display: none;
+  }
+  
+  .news-article {
+    box-shadow: none;
+    padding: 0;
+  }
+  
+  .article-meta {
+    border-bottom: 1px solid #ccc;
+  }
+}

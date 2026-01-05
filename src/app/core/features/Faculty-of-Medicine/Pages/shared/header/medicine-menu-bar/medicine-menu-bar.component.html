@@ -1,0 +1,120 @@
+  <!-- medicine-menu-bar.component.html -->
+    <nav class="medicine-menu-bar">
+      <div class="menu-container">
+        <!-- Mobile Menu Toggle Button -->
+        <button
+          class="menu-toggle-btn"
+          type="button"
+          (click)="toggleMobileMenu()"
+          [attr.aria-expanded]="!isCollapsed"
+          aria-label="Toggle navigation"
+          [class.active]="!isCollapsed"
+        >
+          <span class="menu-toggle-icon">
+            <i class="fas" [class.fa-bars]="isCollapsed" [class.fa-times]="!isCollapsed"></i>
+          </span>
+        </button>
+
+        <!-- Navigation Menu -->
+        <div
+          class="menu-nav"
+          [class.collapsed]="isCollapsed"
+          [class.expanded]="!isCollapsed"
+          [class.mobile]="isMobile"
+        >
+          <ul class="menu-list">
+            <!-- Main Navigation Tabs -->
+            <li
+              class="menu-item"
+              *ngFor="let tab of menuTabs; trackBy: trackByFn"
+              [class.has-dropdown]="tab.childs && tab.childs.length > 0"
+              [class.dropdown-open]="activeDropdown === tab.id"
+            >
+              <!-- Regular Tab -->
+              <a
+                *ngIf="!tab.childs || tab.childs.length === 0"
+                class="menu-link"
+                [class.active]="tab.isActive"
+                [routerLink]="tab.target"
+                [fragment]="tab.fragment"
+                (click)="onTabClick(tab, $event)"
+                [attr.aria-current]="tab.isActive ? 'page' : null"
+              >
+                <i *ngIf="tab.icon" [class]="tab.icon" class="menu-icon"></i>
+                <span class="menu-text">{{ tab.title }}</span>
+              </a>
+
+              <!-- Dropdown Tab -->
+              <div *ngIf="tab.childs && tab.childs.length > 0" class="dropdown">
+                <a
+                  class="menu-link dropdown-toggle"
+                  [class.active]="tab.isActive"
+                  href="#"
+                  role="button"
+                  (click)="onTabClick(tab, $event)"
+                  [attr.aria-expanded]="activeDropdown === tab.id"
+                  aria-haspopup="true"
+                >
+                  <i *ngIf="tab.icon" [class]="tab.icon" class="menu-icon"></i>
+                  <span class="menu-text">{{ tab.title }}</span>
+                  <!-- <i class="fas fa-chevron-down dropdown-arrow"
+                     [class.rotated]="activeDropdown === tab.id"></i> -->
+                </a>
+
+                <!-- Dropdown Menu for regular -->
+                <ul
+                  *ngIf="tab.type === 'menu'" class="dropdown-menu"
+                  [class.show]="activeDropdown === tab.id"
+                  [attr.aria-labelledby]="'dropdown-' + tab.id"
+                >
+                  <li *ngFor="let subTab of tab.childs; trackBy: trackByFn">
+                    <a
+                      class="dropdown-item"
+                      [class.active]="subTab.isActive"
+                      [routerLink]="subTab.target"
+                      [fragment]="subTab.fragment"
+                      (click)="onSubTabClick(subTab, tab, $event)"
+                    >
+                      <i *ngIf="subTab.icon" [class]="subTab.icon" class="dropdown-icon"></i>
+                      <span class="dropdown-text">{{ subTab.title }}</span>
+                    </a>
+                  </li>
+                </ul>
+
+                <!-- Two-column Dropdown Menu -->
+                <div
+                  *ngIf="tab.type === 'columns'" class="dropdown-columns"
+                  [class.show]="activeDropdown === tab.id"
+                  [attr.aria-labelledby]="'dropdown-' + tab.id"
+                >
+                  <div *ngFor="let subTab of tab.childs; trackBy: trackByFn" class="dropdown-column">
+                    <h4 class="column-title">{{ subTab.title }}</h4>
+                    <ul class="column-list">
+                      <li *ngFor="let subSubTab of subTab.childs; trackBy: trackByFn">
+                        <a
+                          class="dropdown-item"
+                          [class.active]="subSubTab.isActive"
+                          [routerLink]="subSubTab.target"
+                          [fragment]="subSubTab.fragment"
+                          (click)="onSubTabClick(subSubTab, tab, $event)"
+                        >
+                          <i *ngIf="subSubTab.icon" [class]="subSubTab.icon" class="dropdown-icon"></i>
+                          <span class="dropdown-text">{{ subSubTab.title }}</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Click outside overlay for mobile -->
+      <div
+        class="dropdown-overlay"
+        *ngIf="!isCollapsed && isMobile"
+        (click)="isCollapsed = true"
+      ></div>
+    </nav>

@@ -1,0 +1,39 @@
+ <div class="medicine-logo-bar">
+      <div class="logo-bar-container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+          <img
+            [src]="logoUrl"
+            [alt]="'Faculty of Medicine Logo'"
+            class="logo-image"
+            (click)="openLocation()"
+            style="cursor: pointer;"
+            *ngIf="logoUrl"
+          >
+          <div class="logo-text">
+            <h1 class="logo-title"> Faculty of medicine </h1>
+          </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="contact-section">
+          <!-- Address -->
+          <a class="contact-item" *ngIf="contact?.address" (click)="openLocation()">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ contact?.address }}</span>
+          </a>
+
+          <!-- Phone -->
+          <a class="contact-item" *ngIf="contact?.phone" (click)="openPhone(contact!.phone)">
+            <i class="fas fa-phone"></i>
+            <span>{{ contact?.phone }}</span>
+          </a>
+
+          <!-- Email -->
+          <a class="contact-item" *ngIf="contact?.email" (click)="openEmail()">
+            <i class="fas fa-envelope"></i>
+            <span>{{ contact?.email }}</span>
+          </a>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,30 @@
+<div class="section-title-upcoming">
+  <h2>{{ sectionTitle }}</h2>
+</div>
+
+<div class="conferences-cards-container">
+  <div class="conference-card" *ngFor="let conference of conferences">
+    <div class="card-image">
+      <img [src]="conference.featuredImagePath" [alt]="conference.title" />
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">{{ conference.title }}</h3>
+      <div class="card-details">
+        <div class="detail-item">
+          <i class="fas fa-calendar-day"></i>
+          <span>{{ conference.createdDate | date: 'yyyy/MM/dd' }}</span>
+        </div>
+      </div>
+      <a [routerLink]="['/news', conference.id]" class="card-link">
+        Conference Details
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="all-conferences-section">
+  <a [routerLink]="['/news']" [queryParams]="{filter: 'conferences'}" class="all-conferences-btn">
+    Faculty Conferences
+  </a>
+</div>

@@ -1,0 +1,427 @@
+/* ===============================
+    📊 Statistics Component - Clean Card Design
+    =============================== */
+
+/* ===============================
+   🏥 Statistics Section Container
+   =============================== */
+.statistics-section {
+  padding: var(--departments-section-padding);
+  background: var(--departments-bg);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===============================
+   📋 Section Title
+   =============================== */
+.section-title {
+  padding-bottom: 60px;
+  text-align: center;
+}
+
+.section-title h2 {
+  font-size: 36px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--departments-text);
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.title-underline {
+  background: linear-gradient(90deg, var(--medicine-medical-blue), var(--medicine-medical-blue-light));
+  width: 80px;
+  height: 4px;
+  margin: 20px auto 0;
+  border-radius: 2px;
+}
+
+/* ===============================
+   🎴 Statistics Cards Grid
+   =============================== */
+.statistics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 50px auto 0;
+  padding: 0 20px;
+}
+
+/* ===============================
+   🎯 Statistic Card - Clean Design with Overlapping Border
+   =============================== */
+.statistic-card {
+  border: 2px solid var(--departments-card-border);
+  position: relative;
+  background: var(--departments-card-bg);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 70px 30px 40px 30px;
+  box-shadow: var(--departments-card-shadow);
+  min-height: 300px;
+  box-sizing: border-box;
+  margin-top: 50px;
+}
+
+.statistic-card:hover {
+  box-shadow: var(--departments-card-hover-shadow);
+  transform: translateY(-8px);
+  border-color: var(--medicine-primary-red);
+}
+
+/* ===============================
+   🎨 Card Icon - Overlapping Design
+   =============================== */
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: var(--medicine-primary-red);
+  border-radius: 50%;
+  margin-bottom: 25px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.25);
+  flex-shrink: 0;
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  border: 4px solid var(--medicine-white);
+}
+
+.statistic-card:hover .card-icon {
+  background: var(--medicine-primary-red-light);
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+}
+
+.icon-image {
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+
+.statistic-card:hover .icon-image {
+  transform: scale(1.1);
+}
+
+/* ===============================
+   📝 Card Content
+   =============================== */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  width: 100%;
+}
+
+.statistic-value {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--medicine-primary-red);
+  margin-bottom: 15px;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.statistic-card:hover .statistic-value {
+  color: var(--medicine-primary-red-light);
+  transform: scale(1.05);
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #5D4037;
+  text-transform: uppercase;
+  margin: 0 0 15px 0;
+  line-height: 1.3;
+  letter-spacing: 0.8px;
+  z-index: 2;
+}
+
+.statistic-card:hover .card-title {
+  color: #6D4C41;
+}
+
+.card-description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--departments-description-color);
+  margin: 0;
+  text-align: center;
+}
+
+/* ===============================
+   📱 Responsive Design - Mobile First
+   =============================== */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+  .statistics-section {
+    padding: 40px 15px;
+  }
+
+  .section-title {
+    padding-bottom: 30px;
+  }
+
+  .section-title h2 {
+    font-size: 24px;
+  }
+
+  .statistics-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 10px;
+    margin: 40px auto 0;
+  }
+
+  .statistic-card {
+    padding: 60px 20px 30px 20px;
+    min-height: 260px;
+    margin-top: 40px;
+  }
+
+  .card-icon {
+    width: 70px;
+    height: 70px;
+    top: -35px;
+    border: 3px solid var(--medicine-white);
+  }
+
+  .statistic-card:hover .card-icon {
+    transform: translateX(-50%) scale(1.05);
+  }
+
+  .icon-image {
+    width: 42px;
+    height: 42px;
+    font-size: 42px;
+  }
+
+  .statistic-value {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .card-description {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 577px) and (max-width: 768px) {
+  .statistics-section {
+    padding: 60px 20px;
+  }
+
+  .section-title {
+    padding-bottom: 40px;
+  }
+
+  .section-title h2 {
+    font-size: 28px;
+  }
+
+  .statistics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+
+  .statistic-card {
+    padding: 65px 25px 35px 25px;
+    min-height: 280px;
+    margin-top: 45px;
+  }
+
+  .card-icon {
+    width: 80px;
+    height: 80px;
+    top: -40px;
+  }
+
+  .statistic-card:hover .card-icon {
+    transform: translateX(-50%) scale(1.08);
+  }
+
+  .icon-image {
+    width: 48px;
+    height: 48px;
+    font-size: 48px;
+  }
+
+  .statistic-value {
+    font-size: 42px;
+  }
+
+  .card-title {
+    font-size: 17px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .statistics-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+  }
+
+  .statistic-card {
+    padding: 68px 25px 35px 25px;
+    margin-top: 48px;
+  }
+
+  .card-icon {
+    width: 90px;
+    height: 90px;
+    top: -45px;
+  }
+
+  .statistic-card:hover .card-icon {
+    transform: translateX(-50%) scale(1.08);
+  }
+
+  .icon-image {
+    width: 54px;
+    height: 54px;
+    font-size: 54px;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1025px) {
+  .statistics-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+}
+
+/* ===============================
+   🎭 Animation Effects
+   =============================== */
+.statistic-card {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.statistic-card:nth-child(1) { animation-delay: 0.1s; }
+.statistic-card:nth-child(2) { animation-delay: 0.2s; }
+.statistic-card:nth-child(3) { animation-delay: 0.3s; }
+.statistic-card:nth-child(4) { animation-delay: 0.4s; }
+.statistic-card:nth-child(5) { animation-delay: 0.5s; }
+.statistic-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* ===============================
+   ♿ Accessibility Improvements
+   =============================== */
+.statistic-card:focus-visible {
+  outline: 3px solid var(--departments-icon-bg);
+  outline-offset: 2px;
+}
+
+.statistic-card:focus-visible .card-icon {
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .statistic-card {
+    animation: none;
+    transition: none;
+  }
+
+  .statistic-card:hover {
+    transform: none;
+  }
+
+  .card-icon,
+  .icon-image,
+  .statistic-value {
+    transition: none;
+  }
+
+  .statistic-card:hover .card-icon,
+  .statistic-card:hover .icon-image,
+  .statistic-card:hover .statistic-value {
+    transform: none;
+  }
+}
+
+/* ===============================
+   🌐 RTL Support
+   =============================== */
+[dir="rtl"] .card-content {
+  text-align: center;
+}
+
+[dir="rtl"] .statistics-section {
+  direction: rtl;
+}
+
+[dir="rtl"] .section-title h2 {
+  text-align: center;
+}
+
+[dir="rtl"] .statistics-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .card-icon {
+  left: auto;
+  right: 50%;
+  transform: translateX(50%);
+}
+
+[dir="rtl"] .statistic-card {
+  text-align: right;
+}
+
+[dir="rtl"] .card-content {
+  align-items: flex-end;
+}
+
+[dir="rtl"] .card-title,
+[dir="rtl"] .card-description {
+  text-align: center;
+}
+
+/* ===============================
+   🔧 Print Styles
+   =============================== */
+@media print {
+  .statistic-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .card-icon {
+    background: #f0f0f0 !important;
+  }
+
+  .icon-image {
+    filter: none;
+  }
+}

@@ -1,0 +1,32 @@
+<div class="medicine-news-section" *ngIf="newsItems.length > 0">
+  <!-- Section Header -->
+  <div class="section-header" *ngIf="showTitle">
+    <div class="container">
+      <h2 class="section-title">{{ sectionTitle }}</h2>
+    </div>
+  </div>
+
+  <!-- News Cards Grid -->
+  <div class="container">
+    <div class="news-grid three-columns">
+      <article class="news-card"
+               *ngFor="let item of visibleItems; trackBy: trackByFn"
+               (click)="goToNewsDetails(item.id)">
+        
+        <div class="card-image">
+          <img [src]="item.featuredImagePath" [alt]="item.title" loading="lazy">
+          <div class="date-badge">
+            <span class="day">{{ getDateParts(item.createdDate).day }}</span>
+            <span class="month">{{ getDateParts(item.createdDate).month }}</span>
+          </div>
+        </div>
+
+        <div class="card-content">
+          <h3 class="card-title">{{ item.title }}</h3>
+          <p class="card-excerpt">{{ item.content | slice:0:100 }}...</p>
+          <a class="read-more">Read More<i class="fas fa-arrow-right" [class.fa-arrow-right]="!isRTL"></i></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="departments-section" *ngIf="departments?.length">
+  <!-- Section Title -->
+  <div class="section-title">
+    <h2>{{ sectionTitle }}</h2>
+  </div>
+
+  <!-- Departments Grid -->
+  <div class="departments-grid">
+    <div class="department-card" *ngFor="let department of departments; trackBy: trackByFn" (click)="onDepartmentClick(department)">
+      <div class="card-icon">
+        <img
+          [src]="department.departmentAttachments?.[0]?.url"
+          [alt]="department.subTitle"
+          class="icon-image"
+        >
+      </div>
+      <div class="card-content">
+        <h4 class="card-title">{{ department.name }}</h4>
+        <p class="card-description">{{ department.about }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Services Button -->
+  <!-- <div class="all-services-section" *ngIf="showAllServicesButton">
+    <a class="all-services-btn" [routerLink]="allServicesUrl">
+      {{ allServicesText }}
+    </a>
+  </div> -->
+</div>
