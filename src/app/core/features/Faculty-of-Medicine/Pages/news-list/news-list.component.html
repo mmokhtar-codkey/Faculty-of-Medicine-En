@@ -34,7 +34,7 @@
   <!-- News Grid -->
   <div class="row mb-5">
     <div class="col-lg-4 col-md-6 mb-4" *ngFor="let newsItem of paginatedNews">
-      <div class="news-card" (click)="goToNewsDetails(newsItem.id)">
+      <div class="news-card" (click)="goToNewsDetails(newsItem)">
         <div class="news-card-image" *ngIf="newsItem.featuredImagePath">
           <img [src]="newsItem.featuredImagePath" [alt]="newsItem.title" class="img-fluid">
         </div>

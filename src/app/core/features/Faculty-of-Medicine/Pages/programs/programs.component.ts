@@ -26,27 +26,31 @@ export class ProgramsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const programId = params['id']; // الـ id من الـ route بيكون string
-      if (programId) {
-        this.loadProgramData(programId);
+      const slug = params['slug']; // نقرأ الـ slug بدل الـ id
+      if (slug) {
+        this.loadProgramData(slug);
       }
     });
   }
 
-  private loadProgramData(programId: string): void {
-    // بيانات البرنامج الأساسية
-    this.programsService.getProgramById(programId).subscribe(program => {
-      this.program = program;
-    });
+  private loadProgramData(slug: string): void {
+    // بيانات البرنامج الأساسية بالـ slug
+    this.programsService.getProgramBySlug(slug).subscribe(program => {
+      if (program) {
+        this.program = program;
 
-    // تفاصيل البرنامج
-    this.programsService.getProgramDetailsByProgramId(programId).subscribe(detail => {
-      this.programDetail = detail;
-    });
+        const programId = program.id; // نستخدم الـ id الداخلي لجلب باقي التفاصيل
 
-    // أعضاء البرنامج
-    this.programsService.getProgramMembersByProgramId(programId).subscribe(members => {
-      this.programMembers = members;
+        // تفاصيل البرنامج
+        this.programsService.getProgramDetailsByProgramId(programId).subscribe(detail => {
+          this.programDetail = detail;
+        });
+
+        // أعضاء البرنامج
+        this.programsService.getProgramMembersByProgramId(programId).subscribe(members => {
+          this.programMembers = members;
+        });
+      }
     });
   }
 

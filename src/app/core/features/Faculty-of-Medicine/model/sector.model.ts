@@ -87,3 +87,22 @@ export interface SectorService {
   sectorId: string;
   sectorName: string;
 }
+
+
+// الوحدات التابعة للقطاع
+export interface SectorUnit {
+  id: string;
+  unitName: string;
+  unitDescriptionAr?: string | null;
+  email?: string;
+  employeesCount?: number;
+  location?: string;
+  unitPhone?: string;
+  memberId?: string;
+  memberName?: string;
+  unitId?: string;
+  managementId?: string;
+  managementName?: string;
+  sectorId: string;
+  sectorName: string;
+}

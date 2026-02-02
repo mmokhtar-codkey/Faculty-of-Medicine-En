@@ -1,6 +1,6 @@
 <div class="container section">
   <!-- Program Title Section -->
-  <div class="sector-header text-white p-4 mb-4 rounded">
+  <div class="sector-header  text-white p-4 mb-4 rounded">
     <h1 class="text-brown">{{ program?.pageTitle || 'Loading data...' }}</h1>
   </div>
 
@@ -73,7 +73,8 @@
             <div class="card-body">
               <div *ngIf="activeAboutSection === 'overview'">
                 <h3 class="text-brown mb-3">Overview</h3>
-                <p>{{ program?.about }}</p>
+                <p *ngIf="program?.about">{{ program?.about }}</p>
+                <p *ngIf="!program?.about">No information available about the program.</p>
               </div>
 
               <div *ngIf="activeAboutSection === 'vision'">
@@ -100,7 +101,7 @@
 
     <!-- Details Tab Content -->
     <div *ngIf="activeTab === 'details'" class="col-12">
-      <div class="card">
+      <div class="card" *ngIf="programDetail?.title || programDetail?.content">
         <div class="card-body">
           <h3 class="text-brown mb-3">{{ programDetail?.title }}</h3>
           <p class="mb-3">{{ programDetail?.content }}</p>
@@ -110,6 +111,7 @@
           </ul>
         </div>
       </div>
+      <p *ngIf="!programDetail?.title && !programDetail?.content">No information available.</p>
     </div>
 
     <!-- Members Tab Content -->

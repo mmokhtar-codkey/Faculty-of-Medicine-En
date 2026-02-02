@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
-import { Sector, SectorDetail, SectorMember, SectorPost, SectorProgram, SectorService } from '../model/sector.model';
+import { Sector, SectorDetail, SectorMember, SectorPost, SectorProgram, SectorService, SectorUnit } from '../model/sector.model';
+import { slugify } from '../../../../utils/slugify';
 
 @Injectable({
   providedIn: 'root'
@@ -55,10 +56,22 @@ export class SectorsService {
     );
   }
 
-  // جلب قطاع واحد بالـ id
+  // جلب وحدات القطاعات 
+  getAllSectorUnits(): Observable<SectorUnit[]>
+   { return this.http.get<{data: SectorUnit[]}>(`${this.apiUrl}sectorunits/getall`).pipe( 
+    map(response => response.data) ); }
+
+  // جلب قطاع واحد بالـ id (قديمة)
   getSectorById(id: string): Observable<Sector | undefined> {
     return this.getAllSectors().pipe(
       map(sectors => sectors.find(s => s.id === id))
+    );
+  }
+
+  // جلب قطاع واحد بالـ slug (جديدة)
+  getSectorBySlug(slug: string): Observable<Sector | undefined> {
+    return this.getAllSectors().pipe(
+      map(sectors => sectors.find(s => slugify(s.name) === slug))
     );
   }
 
@@ -96,4 +109,8 @@ export class SectorsService {
       map(services => services.filter(s => s.sectorId === sectorId))
     );
   }
+
+  getSectorUnitsById(sectorId: string): Observable<SectorUnit[]>
+   { return this.getAllSectorUnits().pipe(
+     map(units => units.filter(u => u.sectorId === sectorId)) ); }
 }

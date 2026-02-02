@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { DepartmentsService } from '../../../../Faculty-of-Medicine/Services/departments.service';
 import { Department } from '../../../model/department.model';
+import { slugify } from '../../../../../../utils/slugify';
 
 @Component({
   selector: 'app-departments',
@@ -40,8 +41,7 @@ export class DepartmentsComponent implements OnInit {
     });
   }
 
-  onDepartmentClick(department: Department): void {
-    this.departmentClicked.emit(department);
-    this.router.navigate(['/departments', department.id]);
-  }
+   onDepartmentClick(department: Department): void
+  { this.departmentClicked.emit(department); 
+    this.router.navigate(['/departments', slugify(department.name)]); }
 }

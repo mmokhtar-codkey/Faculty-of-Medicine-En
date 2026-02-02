@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { Unit, UnitDetail, UnitMember } from '../model/unit.model';
+import { slugify } from '../../../../utils/slugify';
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +35,17 @@ export class UnitsService {
     );
   }
 
-  // جلب وحدة واحدة بالـ id
+  // جلب وحدة واحدة بالـ id (قديمة)
   getUnitById(id: string): Observable<Unit | undefined> {
     return this.getAllUnits().pipe(
       map(units => units.find(u => u.id === id))
+    );
+  }
+
+  // جلب وحدة واحدة بالـ slug (جديدة)
+  getUnitBySlug(slug: string): Observable<Unit | undefined> {
+    return this.getAllUnits().pipe(
+      map(units => units.find(u => slugify(u.unitTitle) === slug))
     );
   }
 

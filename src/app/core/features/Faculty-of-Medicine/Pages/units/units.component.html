@@ -1,6 +1,6 @@
 <div class="container section">
   <!-- Unit Title Section -->
-  <div class="sector-header text-white p-4 mb-4 rounded">
+  <div class="sector-header  text-white p-4 mb-4 rounded">
     <h1 class="text-brown">{{ unit?.unitTitle || 'Loading data...' }}</h1>
   </div>
 
@@ -59,7 +59,8 @@
             <div class="card-body">
               <div *ngIf="activeAboutSection === 'overview'">
                 <h3 class="text-brown mb-3">Overview</h3>
-                <p>{{ unit?.content }}</p>
+                <p *ngIf="unit?.content">{{ unit?.content }}</p>
+                <p *ngIf="!unit?.content">No information available about the unit.</p>
               </div>
 
               <div *ngIf="activeAboutSection === 'vision'">
@@ -86,13 +87,14 @@
 
     <!-- Services Tab Content -->
     <div *ngIf="activeTab === 'services'" class="col-12">
-      <div class="card">
+      <div class="card" *ngIf="unitDetail?.title || unitDetail?.content || unitDetail?.unitPlace">
         <div class="card-body">
           <h3 class="text-brown mb-3">{{ unitDetail?.title }}</h3>
           <p class="mb-3">{{ unitDetail?.content }}</p>
           <p><strong>Location:</strong> {{ unitDetail?.unitPlace }}</p>
         </div>
       </div>
+      <p *ngIf="!unitDetail?.title && !unitDetail?.content && !unitDetail?.unitPlace">No information available.</p>
     </div>
 
     <!-- Members Tab Content -->
@@ -107,7 +109,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h6 class="card-title">{{ member.memberName }}</h6>
-                    <p><span *ngIf="member.isLeader">(Head of Unit)</span></p>
+                    <p><span *ngIf="member.isLeader">(Unit Leader)</span></p>
                   </div>
                 </div>
               </div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CentersService } from '../../Services/centers.service';
-import { Center, CenterDetail, CenterMember,  } from '../../model/center.model';
+import { Center, CenterDetail, CenterMember } from '../../model/center.model';
 
 @Component({
   selector: 'app-centers',
@@ -27,24 +27,31 @@ export class CentersComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const centerId = params['id'];
-      if (centerId) {
-        this.loadCenterData(centerId);
+      const slug = params['slug']; // نقرأ الـ slug بدل الـ id
+      if (slug) {
+        this.loadCenterData(slug);
       }
     });
   }
 
-  private loadCenterData(centerId: string): void {
-    this.centersService.getById(centerId).subscribe(center => {
-      this.center = center;
-    });
+  private loadCenterData(slug: string): void {
+    // بيانات المركز الأساسية بالـ slug
+    this.centersService.getBySlug(slug).subscribe(center => {
+      if (center) {
+        this.center = center;
 
-    this.centersService.getDetailsByCenterId(centerId).subscribe(detail => {
-      this.centerDetail = detail;
-    });
+        const centerId = center.id; // نستخدم الـ id الداخلي لجلب باقي التفاصيل
 
-    this.centersService.getMembersByCenterId(centerId).subscribe(members => {
-      this.centerMembers = members;
+        // تفاصيل المركز
+        this.centersService.getDetailsByCenterId(centerId).subscribe(detail => {
+          this.centerDetail = detail;
+        });
+
+        // أعضاء المركز
+        this.centersService.getMembersByCenterId(centerId).subscribe(members => {
+          this.centerMembers = members;
+        });
+      }
     });
   }
 

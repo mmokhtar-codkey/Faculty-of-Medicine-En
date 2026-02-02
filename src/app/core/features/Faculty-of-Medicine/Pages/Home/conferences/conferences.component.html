@@ -15,7 +15,7 @@
           <span>{{ conference.createdDate | date: 'yyyy/MM/dd' }}</span>
         </div>
       </div>
-      <a [routerLink]="['/news', conference.id]" class="card-link">
+      <a (click)="goToConferenceDetails(conference)" class="card-link">
         Conference Details
         <i class="fas fa-arrow-right"></i>
       </a>

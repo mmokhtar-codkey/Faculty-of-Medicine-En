@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { App } from './app';
 import { providePrimeNG } from 'primeng/config';
+import { LoaderService } from './core/features/Faculty-of-Medicine/Services/loader.service';
 
 
 export const appConfig: ApplicationConfig = {
@@ -12,13 +13,14 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'top' })),
-     providePrimeNG({
+    providePrimeNG({
       theme: {
         preset: Aura,
         options: {
           darkModeSelector: 'none'
         }
       }
-    })
+    }),
+    LoaderService
   ]
 };

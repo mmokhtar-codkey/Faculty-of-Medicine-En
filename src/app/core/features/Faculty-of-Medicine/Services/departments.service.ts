@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { Department, DepartmentDetail, DepartmentMember, DepartmentProgram, DepartmentService } from '../model/department.model';
+import { slugify } from '../../../../utils/slugify';
 
 @Injectable({
   providedIn: 'root'
@@ -48,10 +49,17 @@ export class DepartmentsService {
     );
   }
 
-  // جلب قسم واحد بالـ id
+  // جلب قسم واحد بالـ id (قديمة)
   getDepartmentById(id: string): Observable<Department | undefined> {
     return this.getAllDepartments().pipe(
       map(departments => departments.find(d => d.id === id))
+    );
+  }
+
+  // جلب قسم واحد بالـ slug (جديدة)
+  getDepartmentBySlug(slug: string): Observable<Department | undefined> {
+    return this.getAllDepartments().pipe(
+      map(departments => departments.find(d => slugify(d.name) === slug))
     );
   }
 

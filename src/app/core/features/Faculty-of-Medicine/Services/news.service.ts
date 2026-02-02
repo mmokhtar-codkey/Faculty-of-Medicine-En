@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { News } from '../model/news.model';
+import { slugify } from '../../../../utils/slugify';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +21,17 @@ export class NewsService {
     );
   }
 
-  // جلب خبر واحد بالـ id
+  // جلب خبر واحد بالـ id (قديمة)
   getNewsById(id: string): Observable<News | undefined> {
     return this.getAllNews().pipe(
       map(news => news.find(n => n.id === id))
+    );
+  }
+
+  // جلب خبر واحد بالـ slug (جديدة)
+  getNewsBySlug(slug: string): Observable<News | undefined> {
+    return this.getAllNews().pipe(
+      map(news => news.find(n => slugify(n.title) === slug))
     );
   }
 

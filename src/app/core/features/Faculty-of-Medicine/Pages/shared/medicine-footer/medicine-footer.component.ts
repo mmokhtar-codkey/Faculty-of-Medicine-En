@@ -5,15 +5,16 @@ import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ContactService } from '../../../Services/contact.service';
 import { NewsService } from '../../../Services/news.service';
-import { LogoService } from '../../../Services/logo.service'; // ✅ استدعاء خدمة اللوجو
+import { LogoService } from '../../../Services/logo.service';
 import { FooterService } from '../../../Services/footer.service';
 import { DepartmentsService } from '../../../Services/departments.service';
 import { CentersService } from '../../../Services/centers.service';
 import { ServiceService } from '../../../Services/service.service';
 import { Contact } from '../../../model/contact.model';
 import { News } from '../../../model/news.model';
-import { Logo } from '../../../model/logo.model'; // ✅ موديل اللوجو
+import { Logo } from '../../../model/logo.model';
 import { Footer, QuickLink, SocialLink } from '../../../model/footer.model';
+import { slugify } from '../../../../../../utils/slugify';
 
 @Component({
   selector: 'app-medicine-footer',
@@ -24,16 +25,16 @@ import { Footer, QuickLink, SocialLink } from '../../../model/footer.model';
 })
 export class MedicineFooterComponent implements OnInit {
   contact?: Contact;
-  logoUrl?: string; // ✅ متغير للوجو
+  logoUrl?: string;
   footer?: Footer;
   quickLinks: QuickLink[] = this.getDefaultQuickLinks();
   socialLinks: SocialLink[] = [];
-  latestPosts: { id: string; title: string; date: string; url: string }[] = [];
+  latestPosts: { slug: string; title: string; date: string; url: string }[] = [];
 
   constructor(
     private contactService: ContactService,
     private newsService: NewsService,
-    private logoService: LogoService, // ✅ حقن خدمة اللوجو
+    private logoService: LogoService,
     private footerService: FooterService,
     private departmentsService: DepartmentsService,
     private centersService: CentersService,
@@ -41,10 +42,9 @@ export class MedicineFooterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.loadFooter(); // Commented out to avoid 404 error until backend implements the endpoint
     this.loadContactInfo();
     this.loadLatestPosts();
-    this.loadLogo(); // ✅ تحميل اللوجو
+    this.loadLogo();
     this.updateDepartmentLink();
     this.updateCentersLink();
     this.updateServicesLink();
@@ -70,14 +70,14 @@ export class MedicineFooterComponent implements OnInit {
           const dateB = b.publishedDate ? new Date(b.publishedDate).getTime() : 0;
           return dateB - dateA;
         })
-        .slice(0, 4)
+        .slice(0, 3)
       )
     ).subscribe((news: News[]) => {
       this.latestPosts = news.map(item => ({
-        id: item.id,
+        slug: slugify(item.title),
         title: item.title,
         date: item.publishedDate || '',
-        url: `/news/${item.id}`
+        url: `/news/${slugify(item.title)}`
       }));
     });
   }
@@ -91,7 +91,6 @@ export class MedicineFooterComponent implements OnInit {
         this.quickLinks = footer.quickLinks && footer.quickLinks.length > 0 ? footer.quickLinks : this.getDefaultQuickLinks();
         this.socialLinks = footer.socialLinks || [];
       }
-      // If footer is null, keep defaults
     });
   }
 
@@ -101,7 +100,7 @@ export class MedicineFooterComponent implements OnInit {
         const firstDepartment = departments[0];
         const departmentLink = this.quickLinks.find(link => link.id === '2');
         if (departmentLink) {
-          departmentLink.url = `/departments/${firstDepartment.id}`;
+          departmentLink.url = `/departments/${slugify(firstDepartment.name)}`;
         }
       }
     });
@@ -113,7 +112,7 @@ export class MedicineFooterComponent implements OnInit {
         const firstCenter = centers[0];
         const centerLink = this.quickLinks.find(link => link.id === '3');
         if (centerLink) {
-          centerLink.url = `/centers/${firstCenter.id}`;
+          centerLink.url = `/centers/${slugify(firstCenter.centerName)}`;
         }
       }
     });
@@ -125,17 +124,16 @@ export class MedicineFooterComponent implements OnInit {
         const firstService = services[0];
         const serviceLink = this.quickLinks.find(link => link.id === '4');
         if (serviceLink) {
-          serviceLink.url = `/services/${firstService.id}`;
+          serviceLink.url = `/services/${slugify(firstService.title)}`;
         }
       }
     });
   }
 
-  private getDefaultQuickLinks(): QuickLink[] {
+ private getDefaultQuickLinks(): QuickLink[] {
   return [
     { id: '1', text: 'About the Faculty', url: '/about', icon: '→' },
     { id: '2', text: 'Academic Departments', url: '/departments', icon: '→' },
-    { id: '3', text: 'Centers', url: '/centers', icon: '→' },
     { id: '4', text: 'Services', url: '/services', icon: '→' },
     { id: '5', text: 'Contact Us', url: '/contact', icon: '→' }
   ];
@@ -145,7 +143,7 @@ export class MedicineFooterComponent implements OnInit {
   private loadLogo(): void {
     this.logoService.getDefaultLogo().subscribe((logo: Logo | undefined) => {
       if (logo) {
-        this.logoUrl = logo.url; // ✅ حفظ رابط اللوجو
+        this.logoUrl = logo.url;
       }
     });
   }

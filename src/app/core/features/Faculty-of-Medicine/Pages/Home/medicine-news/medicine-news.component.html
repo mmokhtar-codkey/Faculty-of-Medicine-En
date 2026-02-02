@@ -11,7 +11,7 @@
     <div class="news-grid three-columns">
       <article class="news-card"
                *ngFor="let item of visibleItems; trackBy: trackByFn"
-               (click)="goToNewsDetails(item.id)">
+               (click)="goToNewsDetails(item)">
         
         <div class="card-image">
           <img [src]="item.featuredImagePath" [alt]="item.title" loading="lazy">

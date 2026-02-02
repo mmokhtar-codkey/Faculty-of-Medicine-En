@@ -26,27 +26,31 @@ export class UnitsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const unitId = params['id'];
-      if (unitId) {
-        this.loadUnitData(unitId);
+      const slug = params['slug']; // نقرأ الـ slug بدل الـ id
+      if (slug) {
+        this.loadUnitData(slug);
       }
     });
   }
 
-  private loadUnitData(unitId: string): void {
-    // بيانات الوحدة الأساسية
-    this.unitsService.getUnitById(unitId).subscribe(unit => {
-      this.unit = unit;
-    });
+  private loadUnitData(slug: string): void {
+    // بيانات الوحدة الأساسية بالـ slug
+    this.unitsService.getUnitBySlug(slug).subscribe(unit => {
+      if (unit) {
+        this.unit = unit;
 
-    // تفاصيل الوحدة
-    this.unitsService.getUnitDetailsByUnitId(unitId).subscribe(detail => {
-      this.unitDetail = detail;
-    });
+        const unitId = unit.id; // نستخدم الـ id الداخلي لجلب باقي التفاصيل
 
-    // أعضاء الوحدة
-    this.unitsService.getUnitMembersByUnitId(unitId).subscribe(members => {
-      this.unitMembers = members;
+        // تفاصيل الوحدة
+        this.unitsService.getUnitDetailsByUnitId(unitId).subscribe(detail => {
+          this.unitDetail = detail;
+        });
+
+        // أعضاء الوحدة
+        this.unitsService.getUnitMembersByUnitId(unitId).subscribe(members => {
+          this.unitMembers = members;
+        });
+      }
     });
   }
 

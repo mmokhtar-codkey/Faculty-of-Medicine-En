@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ServiceService } from '../../../Services/service.service';
 import { ServiceDetail } from '../../../model/service.model';
+import { slugify } from '../../../../../../utils/slugify';
 
 @Component({
   selector: 'app-services',
@@ -12,11 +13,12 @@ import { ServiceDetail } from '../../../model/service.model';
   styleUrls: ['./services.component.css']
 })
 export class ServicesComponent implements OnInit {
-  @Input() sectionTitle = 'Faculty Services';
+ @Input() sectionTitle = 'Faculty Services';
   @Input() showTitle = true;
   @Input() showAllServicesButton = true;
   @Input() allServicesText = 'All Services';
   @Input() allServicesUrl = '/services';
+  
   
   @Output() serviceClicked = new EventEmitter<ServiceDetail>();
   @Output() allServicesClicked = new EventEmitter<void>();
@@ -48,22 +50,25 @@ export class ServicesComponent implements OnInit {
     return item.id;
   }
 
-  private loadServices(): void {
-    this.serviceService.getAll().subscribe(services => {
-      // Display only active services
-      this.services = services.filter(s => s.isActive);
-      // Set allServicesUrl to first service if available
-      if (this.services.length > 0) {
-        this.allServicesUrl = '/services/' + this.services[0].id;
-      }
-    });
-  }
+ private loadServices(): void {
+  this.serviceService.getAll().subscribe(services => {
+    // نعرض فقط الخدمات الفعالة
+    this.services = services.filter(s => s.isActive);
+
+    // لو عايز تخلي زرار "جميع الخدمات" يوجّه لأول خدمة مثلاً
+    if (this.services.length > 0) {
+      this.allServicesUrl = '/services/' + slugify(this.services[0].title);
+    } else {
+      this.allServicesUrl = '/services'; // fallback لو مفيش خدمات
+    }
+  });
+}
+
 
   onServiceClick(service: ServiceDetail): void {
     this.serviceClicked.emit(service);
-    // Navigate using the id from the backend
-    if (service && service.id != null && service.id !== '') {
-      this.router.navigate(['/services', String(service.id)]);
+    if (service && service.title != null && service.title !== '') {
+      this.router.navigate(['/services', slugify(service.title)]);
     }
   }
 
@@ -71,3 +76,4 @@ export class ServicesComponent implements OnInit {
     this.allServicesClicked.emit();
   }
 }
+

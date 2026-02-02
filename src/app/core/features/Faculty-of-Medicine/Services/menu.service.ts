@@ -1,44 +1,188 @@
 import { Injectable } from '@angular/core';
 import { MenuTab } from '../model/menu.model';
-import { Observable, of, forkJoin } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ServiceService } from './service.service';
 import { CentersService } from './centers.service';
 import { UnitsService } from './units.service';
 import { ProgramsService } from './programs.service';
 import { DepartmentsService } from './departments.service';
 import { SectorsService } from './sector.service';
+import { slugify } from '../../../../utils/slugify';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService {
 
-  constructor(private serviceService: ServiceService, private centersService: CentersService, private unitsService: UnitsService, private programsService: ProgramsService, private departmentsService: DepartmentsService, private sectorsService: SectorsService) {}
+  constructor(
+    private serviceService: ServiceService,
+    private centersService: CentersService,
+    private unitsService: UnitsService,
+    private programsService: ProgramsService,
+    private departmentsService: DepartmentsService,
+    private sectorsService: SectorsService
+  ) {}
 
-
-  private buildMenuTabs(services: any[], centers: any[], units: any[], programs: any[], departments: any[], sectors: any[]): MenuTab[] {
+  private buildMenuTabs(
+    services: any[],
+    centers: any[],
+    units: any[],
+    programs: any[],
+    departments: any[],
+    sectors: any[]
+  ): MenuTab[] {
     return [
+      {
+        id: 1,
+        title: 'Home',
+        target: '/',
+        isActive: true
+      },
+      {
+        id: 2,
+        title: 'About the Faculty',
+        target: '/about',
+        isActive: false,
+      },
+      {
+        id: 3,
+        title: 'Departments',
+        isActive: false,
+        type: 'columns',
+        childs: this.buildDepartmentColumns(departments)
+      },
+      {
+        id: 31,
+        title: 'Programs',
+        isActive: false,
+        type: 'menu',
+        childs: programs.map(program => ({
+          id: parseInt(program.id),
+          title: program.pageTitle,
+          target: `/programs/${slugify(program.pageTitle)}`,
+          isActive: false
+        }))
+      },
+      {
+        id: 4,
+        title: 'Sectors',
+        isActive: false,
+        type: 'menu',
+        childs: sectors.map(sector => ({
+          id: parseInt(sector.id),
+          title: sector.name,
+          target: `/sectors/${slugify(sector.name)}`,
+          isActive: false
+        }))
+      },
+      {
+        id: 5,
+        title: 'Centers',
+        isActive: false,
+        type: 'menu',
+        childs: centers.map(center => ({
+          id: parseInt(center.id),
+          title: center.centerName,
+          target: `/centers/${slugify(center.centerName)}`,
+          isActive: false
+        }))
+      },
+      {
+        id: 9,
+        title: 'Units',
+        isActive: false,
+        type: 'menu',
+        childs: units.map(unit => ({
+          id: parseInt(unit.id),
+          title: unit.unitTitle,
+          target: `/units/${slugify(unit.unitTitle)}`,
+          isActive: false
+        }))
+      },
+      {
+        id: 6,
+        title: 'Services',
+        target: '/services',
+        isActive: false,
+        type: 'menu',
+        childs: services.map(service => ({
+          id: parseInt(service.id),
+          title: service.title,
+          target: `/services/${slugify(service.title)}`,
+          isActive: false
+        }))
+      },
+      {
+        id: 7,
+        title: 'Faculty News',
+        target: '/news',
+        isActive: false
+      },
+      {
+        id: 8,
+        title: 'Contact Us',
+        target: '/contact',
+        isActive: false
+      }
+    ];
+  }
 
-    { id: 1, title: 'Home', 
-      target: '/', 
-      isActive: true }, 
+  private buildDepartmentColumns(departments: any[]): MenuTab[] {
+    const scientificDept: any[] = [];
+    const clinicalDept: any[] = [];
 
-    { id: 2, title: 'About the Faculty',
-       target: '/about', 
-       isActive: false },
+    // Divide departments based on the word "Science"
+    departments.forEach(department => {
+      const category = this.getDefaultCategory(department);
+      if (category === 'scientific') {
+        scientificDept.push(department);
+      } else {
+        clinicalDept.push(department);
+      }
+    });
 
-     { id: 3, title: 'Academic Departments', 
-      isActive: false, type: 'menu',
-       childs: departments.map(department => ({ id: parseInt(department.id), title: department.name,
-         target: `/departments/${department.id}`, isActive: false })) },
-      { id: 31, title: 'Programs', isActive: false, type: 'menu', childs: programs.map(program => ({ id: parseInt(program.id), title: program.pageTitle, target: `/programs/${program.id}`, isActive: false })) }, 
-      { id: 4, title: 'Sectors', isActive: false, type: 'menu', childs: sectors.map(sector => ({ id: parseInt(sector.id), title: sector.name, target: `/sectors/${sector.id}`, isActive: false })) }, 
-      { id: 5, title: 'Centers', isActive: false, type: 'menu', childs: centers.map(center => ({ id: parseInt(center.id), title: center.centerName, target: `/centers/${center.id}`, isActive: false })) },
-       { id: 9, title: 'Units', isActive: false, type: 'menu', childs: units.map(unit => ({ id: parseInt(unit.id), title: unit.unitTitle, target: `/units/${unit.id}`, isActive: false })) }, 
-       { id: 6, title: 'Services', target: '/services', isActive: false, type: 'menu', childs: services.map(service => ({ id: parseInt(service.id), title: service.title, target: `/services/${service.id}`, isActive: false })) }, 
-       { id: 7, title: 'Faculty News', target: '/news', isActive: false }, 
-       { id: 8, title: 'Contact Us', target: '/contact', isActive: false } ]; }
+    const columns: MenuTab[] = [];
+
+    if (scientificDept.length > 0) {
+      columns.push({
+        id: 100,
+        title: 'Academic Departments',
+        isActive: false,
+        childs: scientificDept.map(department => ({
+          id: parseInt(department.id),
+          title: department.name,
+          target: `/departments/${slugify(department.name)}`,
+          isActive: false
+        }))
+      });
+    }
+
+    if (clinicalDept.length > 0) {
+      columns.push({
+        id: 101,
+        title: 'Clinical Departments',
+        isActive: false,
+        childs: clinicalDept.map(department => ({
+          id: parseInt(department.id),
+          title: department.name,
+          target: `/departments/${slugify(department.name)}`,
+          isActive: false
+        }))
+      });
+    }
+
+    return columns;
+  }
+
+  private getDefaultCategory(department: any): string {
+    // If the name contains the word "Science" then Academic
+    if (department.name.includes('Science')) {
+      return 'scientific';
+    }
+    // Otherwise Clinical
+    return 'clinical';
+  }
 
   getMenuTabs(): Observable<MenuTab[]> {
     return forkJoin({
@@ -49,7 +193,9 @@ export class MenuService {
       departments: this.departmentsService.getAllDepartments(),
       sectors: this.sectorsService.getAllSectors()
     }).pipe(
-      map(({ services, centers, units, programs, departments, sectors }) => this.buildMenuTabs(services, centers, units, programs, departments, sectors))
+      map(({ services, centers, units, programs, departments, sectors }) =>
+        this.buildMenuTabs(services, centers, units, programs, departments, sectors)
+      )
     );
   }
 

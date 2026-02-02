@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { NewsService } from '../../../Services/news.service';
 import { News } from '../../../model/news.model';
+import { slugify } from '../../../../../../utils/slugify';
+
 
 @Component({
   selector: 'app-conference-upcoming',
@@ -16,7 +18,7 @@ export class ConferenceUpcomingComponent implements OnInit {
 
   conferences: News[] = [];
 
-  constructor(private newsService: NewsService) {}
+  constructor(private newsService: NewsService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadUpcomingConferences();
@@ -34,5 +36,9 @@ export class ConferenceUpcomingComponent implements OnInit {
         new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
       ).slice(0, 3);
     });
+  }
+   goToConferenceDetails(conference: News): void {
+    // التوجيه بالـ slug بدل الـ id
+    this.router.navigate(['/news', slugify(conference.title)]);
   }
 }

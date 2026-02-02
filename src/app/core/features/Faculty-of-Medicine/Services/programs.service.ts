@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { Program, ProgramDetail, ProgramMember } from '../model/program.model';
+import { slugify } from '../../../../utils/slugify';
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +35,17 @@ export class ProgramsService {
     );
   }
 
-  // جلب برنامج واحد بالـ id
+  // جلب برنامج واحد بالـ id (قديمة)
   getProgramById(id: string): Observable<Program | undefined> {
     return this.getAllPrograms().pipe(
       map(programs => programs.find(p => p.id === id))
+    );
+  }
+
+  // جلب برنامج واحد بالـ slug (جديدة)
+  getProgramBySlug(slug: string): Observable<Program | undefined> {
+    return this.getAllPrograms().pipe(
+      map(programs => programs.find(p => slugify(p.pageTitle) === slug))
     );
   }
 

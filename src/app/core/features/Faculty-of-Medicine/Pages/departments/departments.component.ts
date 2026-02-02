@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DepartmentsService } from '../../Services/departments.service';
 import { Department, DepartmentDetail, DepartmentProgram, DepartmentService, DepartmentMember } from '../../model/department.model';
+import { slugify } from '../../../../../utils/slugify';
 
 @Component({
   selector: 'app-departments',
@@ -18,8 +19,8 @@ export class DepartmentsComponent implements OnInit {
   departmentServices: DepartmentService[] = [];
   departmentMembers: DepartmentMember[] = [];
 
-  activeTab = 'about';
-  activeAboutSection = 'overview';
+  activeTab = 'services';
+  activeAboutSection = 'services';
   selectedProgram?: DepartmentProgram;
   selectedService?: DepartmentService;
 
@@ -30,43 +31,56 @@ export class DepartmentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const departmentId = params['id']; // id من الـ route بيكون string
-      if (departmentId) {
-        this.loadDepartmentData(departmentId);
+      const slug = params['slug']; // slug بدل id
+      if (slug) {
+        this.loadDepartmentData(slug);
       }
     });
   }
 
-  private loadDepartmentData(departmentId: string): void {
-    // بيانات القسم الأساسية
-    this.departmentsService.getDepartmentById(departmentId).subscribe(department => {
-      this.department = department;
-    });
+  private loadDepartmentData(slug: string): void {
+    // Reset all data before loading new department
+    this.department = undefined;
+    this.departmentDetail = undefined;
+    this.departmentPrograms = [];
+    this.departmentServices = [];
+    this.departmentMembers = [];
+    this.selectedProgram = undefined;
+    this.selectedService = undefined;
+    
+    // بيانات القسم الأساسية بالـ slug
+    this.departmentsService.getDepartmentBySlug(slug).subscribe(department => {
+      if (department) {
+        this.department = department;
 
-    // تفاصيل القسم
-    this.departmentsService.getDepartmentDetailsById(departmentId).subscribe(detail => {
-      this.departmentDetail = detail;
-    });
+        const departmentId = department.id; // نستخدم الـ id الداخلي لجلب باقي التفاصيل
 
-    // برامج القسم
-    this.departmentsService.getDepartmentProgramsById(departmentId).subscribe(programs => {
-      this.departmentPrograms = programs;
-      if (this.departmentPrograms.length > 0) {
-        this.selectedProgram = this.departmentPrograms[0];
+        // تفاصيل القسم
+        this.departmentsService.getDepartmentDetailsById(departmentId).subscribe(detail => {
+          this.departmentDetail = detail;
+        });
+
+        // برامج القسم
+        this.departmentsService.getDepartmentProgramsById(departmentId).subscribe(programs => {
+          this.departmentPrograms = programs;
+          if (this.departmentPrograms.length > 0) {
+            this.selectedProgram = this.departmentPrograms[0];
+          }
+        });
+
+        // خدمات القسم
+        this.departmentsService.getDepartmentServicesById(departmentId).subscribe(services => {
+          this.departmentServices = services;
+          if (this.departmentServices.length > 0) {
+            this.selectedService = this.departmentServices[0];
+          }
+        });
+
+        // أعضاء القسم
+        this.departmentsService.getDepartmentMembersById(departmentId).subscribe(members => {
+          this.departmentMembers = members;
+        });
       }
-    });
-
-    // خدمات القسم
-    this.departmentsService.getDepartmentServicesById(departmentId).subscribe(services => {
-      this.departmentServices = services;
-      if (this.departmentServices.length > 0) {
-        this.selectedService = this.departmentServices[0];
-      }
-    });
-
-    // أعضاء القسم
-    this.departmentsService.getDepartmentMembersById(departmentId).subscribe(members => {
-      this.departmentMembers = members;
     });
   }
 

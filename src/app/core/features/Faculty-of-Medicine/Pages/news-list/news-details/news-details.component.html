@@ -53,12 +53,12 @@
               Back to News List
             </button>
             
-            <button class="list-group-item list-group-item-action" *ngIf="previousNews" (click)="goToNewsDetails(previousNews.id)">
+            <button class="list-group-item list-group-item-action" *ngIf="previousNews" (click)="goToNewsDetails(previousNews)">
               <i class="fas fa-chevron-right me-2"></i>
               Previous News
             </button>
             
-            <button class="list-group-item list-group-item-action" *ngIf="nextNews" (click)="goToNewsDetails(nextNews.id)">
+            <button class="list-group-item list-group-item-action" *ngIf="nextNews" (click)="goToNewsDetails(nextNews)">
               <i class="fas fa-chevron-left me-2"></i>
               Next News
             </button>
@@ -69,7 +69,7 @@
         <div class="sidebar-section" *ngIf="relatedNews.length > 0">
           <h5 class="sidebar-title">Related News</h5>
           <div class="related-news">
-            <div class="related-news-item" *ngFor="let relatedItem of relatedNews" (click)="goToNewsDetails(relatedItem.id)">
+            <div class="related-news-item" *ngFor="let relatedItem of relatedNews" (click)="goToNewsDetails(relatedItem)">
               <div class="row g-2">
                 <div class="col-4" *ngIf="relatedItem.featuredImagePath">
                   <img [src]="relatedItem.featuredImagePath" [alt]="relatedItem.title" class="img-fluid rounded">

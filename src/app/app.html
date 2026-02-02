@@ -1,6 +1,13 @@
-<main>
-  <router-outlet></router-outlet>
-</main>
+<!-- Medical Loader Component - Shows on page load -->
+<app-loader 
+  [isVisible]="isLoading" 
+  [message]="loadingMessage"
+></app-loader>
+
+<!-- Main Router Outlet -->
+<router-outlet></router-outlet>
+
+<!-- Scroll to Top Button -->
 <div 
   *ngIf="showScrollButton" 
   (click)="scrollToTop()" 
@@ -9,6 +16,5 @@
   <div class="scroll-arrow">
     <i class="pi pi-chevron-up"></i>
   </div>
-  <p class="scroll-text">Top</p>
+  <p class="scroll-text">scroll To Top</p>
 </div>
-

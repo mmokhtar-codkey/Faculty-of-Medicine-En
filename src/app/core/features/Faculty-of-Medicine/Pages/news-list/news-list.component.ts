@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NewsService } from '../../Services/news.service';
 import { News } from '../../model/news.model';
+import { slugify } from '../../../../../utils/slugify';
 
 @Component({
   selector: 'app-news-list',
@@ -115,7 +116,8 @@ export class NewsListComponent implements OnInit {
     return 'badge-secondary';
   }
 
-  goToNewsDetails(newsId: string): void {
-    this.router.navigate(['/news', newsId]);
+  goToNewsDetails(news: News): void {
+    // navigate using slug instead of id
+    this.router.navigate(['/news', slugify(news.title)]);
   }
 }

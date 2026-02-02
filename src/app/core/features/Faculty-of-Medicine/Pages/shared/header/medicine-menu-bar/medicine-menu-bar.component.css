@@ -163,7 +163,7 @@
   color: #fff;
 }
 .menu-link.active {
-  background: var(--medicine-primary-red-light);
+  /* background: var(--medicine-primary-red-light); */
   color: #fff;
   box-shadow: var(--medicine-menu-active-shadow);
 }

@@ -1,6 +1,6 @@
 <div class="container section">
   <!-- Sector Title Section -->
-  <div class="sector-header text-white p-4 mb-4 rounded">
+  <div class="sector-header  text-white p-4 mb-4 rounded">
     <h1 class="text-brown">{{ sector?.name || 'Loading data...' }}</h1>
   </div>
 
@@ -35,6 +35,11 @@
       <li class="nav-item">
         <button class="nav-link" [class.active]="activeTab === 'members'" (click)="switchTab('members')" type="button">
           Sector Members
+        </button>
+      </li>
+      <li class="nav-item"> 
+        <button class="nav-link" [class.active]="activeTab === 'units'" (click)="switchTab('units')" type="button">
+          Sector Units
         </button>
       </li>
     </ul>
@@ -73,7 +78,8 @@
             <div class="card-body">
               <div *ngIf="activeAboutSection === 'overview'">
                 <h3 class="text-brown mb-3">Overview</h3>
-                <p>{{ sector?.about }}</p>
+                <p *ngIf="sector?.about">{{ sector?.about }}</p>
+                <p *ngIf="!sector?.about">No information available about the sector.</p>
               </div>
 
               <div *ngIf="activeAboutSection === 'vision'">
@@ -104,6 +110,7 @@
         <div class="card-body">
           <h3 class="text-brown mb-3">{{ sectorDetail?.title }}</h3>
           <p class="mb-3">{{ sectorDetail?.content }}</p>
+          <p *ngIf="!sectorDetail?.content">No details available about the sector.</p>
         </div>
       </div>
     </div>
@@ -111,7 +118,7 @@
     <!-- Programs Tab Content -->
     <div *ngIf="activeTab === 'programs'" class="col-12">
       <div class="row">
-        <div class="col-md-3 mb-4">
+        <div class="col-md-3 mb-4" *ngIf="sectorPrograms && sectorPrograms.length > 0">
           <div class="list-group">
             <button type="button" class="list-group-item list-group-item-action"
               *ngFor="let program of sectorPrograms"
@@ -127,9 +134,11 @@
               <h3 class="text-brown mb-3">{{ selectedProgram.name }}</h3>
               <p><strong>Program Name:</strong> {{ selectedProgram.programName }}</p>
               <p><strong>Sector:</strong> {{ selectedProgram.sectorName }}</p>
-              <a [routerLink]="['/programs', selectedProgram.programId]" class="btn btn-medicine">View Program</a>
+              <a (click)="goToProgramDetails(selectedProgram)" class="btn btn-medicine">View Program</a>
             </div>
           </div>
+          <p *ngIf="!selectedProgram && sectorPrograms && sectorPrograms.length > 0">No details available about the program.</p>
+          <p *ngIf="!sectorPrograms || sectorPrograms.length === 0">No programs available in this sector.</p>
         </div>
       </div>
     </div>
@@ -137,7 +146,7 @@
     <!-- Services Tab Content -->
     <div *ngIf="activeTab === 'services'" class="col-12">
       <div class="row">
-        <div class="col-md-3 mb-4">
+        <div class="col-md-3 mb-4" *ngIf="sectorServices && sectorServices.length > 0">
           <div class="list-group">
             <button type="button" class="list-group-item list-group-item-action"
               *ngFor="let service of sectorServices"
@@ -161,6 +170,8 @@
               </ul>
             </div>
           </div>
+          <p *ngIf="!selectedService && sectorServices && sectorServices.length > 0">No details available about the service.</p>
+          <p *ngIf="!sectorServices || sectorServices.length === 0">No services available in this sector.</p>
         </div>
       </div>
     </div>
@@ -168,7 +179,7 @@
     <!-- Posts Tab Content -->
     <div *ngIf="activeTab === 'posts'" class="col-12">
       <h3 class="text-brown mb-3">Sector Posts</h3>
-      <div class="row">
+      <div class="row" *ngIf="sectorPosts && sectorPosts.length > 0">
         <div class="col-lg-4 col-md-6 mb-4" *ngFor="let post of sectorPosts">
           <div class="news-card">
             <div class="news-card-body">
@@ -179,12 +190,13 @@
                    style="width:100%; height: 300px;">
               <h5 class="news-card-title">{{ post.title }}</h5>
               <div class="d-flex justify-content-between align-items-center">
-                <button class="btn btn-medicine btn-sm" [routerLink]="['/news', post.id]">Read More</button>
+                <button class="btn btn-medicine btn-sm"  (click)="goToPostDetails(post)">Read More</button>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <p *ngIf="!sectorPosts || sectorPosts.length === 0">No posts available in this sector.</p>
     </div>
 
     <!-- Members Tab Content -->
@@ -198,7 +210,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h6 class="card-title">{{ member.memberName }}</h6>
-                    <p><span *ngIf="member.isLeader">(Head of Sector)</span></p>
+                    <p><span *ngIf="member.isLeader">(Sector Leader)</span></p>
                   </div>
                 </div>
               </div>
@@ -206,4 +218,37 @@
           </div>
           <div *ngIf="!sectorMembers || sectorMembers.length === 0">
             <p>No information available about sector members.</p>
-</div> </div> </div> </div> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+
+    <div *ngIf="activeTab === 'units'" class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="text-brown mb-3">Units under the Sector</h3>
+          <div *ngIf="sectorUnits && sectorUnits.length > 0">
+            <div class="row">
+              <div class="col-md-6 mb-3" *ngFor="let unit of sectorUnits">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="card-title">{{ unit.unitName }}</h6>
+                    <p><strong>Location:</strong> {{ unit.location }}</p>
+                    <p><strong>Responsible:</strong> {{ unit.memberName }}</p>
+                    <p><strong>Email:</strong> {{ unit.email }}</p>
+                    <p><strong>Phone:</strong> {{ unit.unitPhone }}</p>
+                    <button class="btn btn-medicine btn-sm"  (click)="goTounitDetails(unit)">Read More</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!sectorUnits || sectorUnits.length === 0">
+            <p>No information available about sector units.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
